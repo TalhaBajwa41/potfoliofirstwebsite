@@ -1,8 +1,10 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Play, Star, ArrowRight, Code, Zap, Shield, Users, Globe, Sparkles, Layers, TrendingUp } from 'lucide-react';
+import { ChevronDown, Play, Star, ArrowRight, Globe, Zap, Shield, Users, Sparkles, Layers, TrendingUp } from 'lucide-react';
+import Header from './Header';
+import Footer from './Footer';
 
-export default function Homepage() {
+export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState({});
   const [activeFeature, setActiveFeature] = useState(0);
@@ -120,34 +122,8 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Enhanced Navigation */}
-      <nav className="relative z-50 flex justify-between items-center px-6 py-4 backdrop-blur-md border-b border-white/10 bg-white/5">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-lg flex items-center justify-center animate-pulse">
-            <Code className="w-4 h-4 text-white" />
-          </div>
-          <div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-            Quantum
-          </div>
-        </div>
-        <div className="hidden md:flex space-x-8">
-          {['Platform', 'Solutions', 'Pricing', 'Community'].map((item, idx) => (
-            <a 
-              key={item} 
-              href="#" 
-              className="hover:text-emerald-400 transition-all duration-300 transform hover:scale-105 relative group"
-              style={{ animationDelay: `${idx * 100}ms` }}
-            >
-              {item}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-emerald-400 transition-all duration-300 group-hover:w-full"></span>
-            </a>
-          ))}
-        </div>
-        <button className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-2 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-emerald-500/25 flex items-center gap-2">
-          <Sparkles className="w-4 h-4" />
-          Launch App
-        </button>
-      </nav>
+      {/* Header */}
+      <Header />
 
       {/* Enhanced Hero Section */}
       <section id="hero" className="relative z-10 min-h-screen flex items-center justify-center px-6">
@@ -329,50 +305,8 @@ export default function Homepage() {
         </div>
       </section>
 
-      {/* Enhanced Footer */}
-      <footer className="relative z-10 border-t border-white/10 py-12 px-6 bg-gradient-to-r from-slate-950/50 to-indigo-950/50 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-lg flex items-center justify-center">
-                  <Code className="w-4 h-4 text-white" />
-                </div>
-                <div className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent">
-                  Quantum
-                </div>
-              </div>
-              <p className="text-gray-400 mb-4">Quantum-level development platform for the future of web applications.</p>
-              <div className="flex gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="w-8 h-8 bg-white/5 rounded-full flex items-center justify-center hover:bg-emerald-500/20 transition-colors duration-300 cursor-pointer">
-                    <div className="w-4 h-4 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full"></div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {[
-              { title: 'Platform', items: ['Features', 'Integrations', 'API', 'Security'] },
-              { title: 'Company', items: ['About', 'Blog', 'Careers', 'Press'] },
-              { title: 'Resources', items: ['Documentation', 'Community', 'Support', 'Status'] }
-            ].map((section, idx) => (
-              <div key={section.title}>
-                <h3 className="font-semibold mb-4 text-emerald-400">{section.title}</h3>
-                <div className="space-y-2">
-                  {section.items.map((item) => (
-                    <a key={item} href="#" className="block text-gray-400 hover:text-emerald-400 transition-colors duration-300">
-                      {item}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-white/10 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Quantum. All rights reserved. Built with quantum precision.</p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer */}
+      <Footer />
 
       <style jsx>{`
         @keyframes float {
