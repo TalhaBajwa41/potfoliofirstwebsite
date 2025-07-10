@@ -1,8 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Play, Star, ArrowRight, Globe, Zap, Shield, Users, Sparkles, Layers, TrendingUp } from 'lucide-react';
-import Header from './Header';
-import Footer from './Footer';
 
 export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -121,9 +119,6 @@ export default function HomePage() {
           <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-full blur-2xl animate-bounce" style={{ animationDuration: '4s' }} />
         </div>
       </div>
-
-      {/* Header */}
-      <Header />
 
       {/* Enhanced Hero Section */}
       <section id="hero" className="relative z-10 min-h-screen flex items-center justify-center px-6">
@@ -304,9 +299,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
 
       <style jsx>{`
         @keyframes float {
