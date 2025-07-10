@@ -1,114 +1,106 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Facebook, Twitter, Linkedin } from 'lucide-react';
+import { useState } from 'react';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Message sent! (Form handling not yet wired to backend)');
-    setForm({ name: '', email: '', message: '' });
+    setLoading(true);
+    setSuccess(false);
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        setSuccess(true);
+        setForm({ name: '', email: '', message: '' });
+      } else {
+        const errorData = await res.json();
+        setErrorMsg(errorData.error || 'Something went wrong.');
+      }
+    } catch (error) {
+      setErrorMsg('Server error. Please try again later.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white px-6 py-20">
-      {/* Hero */}
-      <section className="text-center max-w-3xl mx-auto mb-16">
-        <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-white to-purple-300 bg-clip-text text-transparent">
-          Get in Touch
-        </h1>
-        <p className="text-gray-400 text-lg">
-          We'd love to hear from you. Whether you have a question or just want to say hi — our inbox is always open.
-        </p>
-      </section>
+    <div className="min-h-screen bg-gray-950 text-white px-6 py-20">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold mb-8 text-center">Contact Us</h1>
 
-      {/* Contact Content */}
-      <section className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white/5 p-8 rounded-2xl border border-white/10 shadow-lg space-y-6">
+        {success && (
+          <div className="bg-green-600 text-white p-4 rounded mb-4">
+            Message sent successfully!
+          </div>
+        )}
+
+        {errorMsg && (
+          <div className="bg-red-600 text-white p-4 rounded mb-4">
+            {errorMsg}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Your Name</label>
+            <label className="block mb-1 font-medium">Name</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Jane Doe"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+            <label className="block mb-1 font-medium">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="you@example.com"
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-1">Your Message</label>
+            <label className="block mb-1 font-medium">Message</label>
             <textarea
               name="message"
               value={form.message}
               onChange={handleChange}
-              required
               rows={5}
-              className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Type your message here..."
-            />
+              required
+              className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            ></textarea>
           </div>
           <button
             type="submit"
-            className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 transition-all rounded-xl text-white font-medium"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded font-semibold text-white"
           >
-            Send Message <Send className="w-5 h-5" />
+            {loading ? 'Sending...' : 'Send Message'}
           </button>
         </form>
-
-        {/* Contact Info */}
-        <div className="space-y-8">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold">Contact Info</h2>
-            <div className="flex items-center gap-3 text-gray-300">
-              <Mail className="w-5 h-5 text-purple-400" />
-              media@yourcompany.com
-            </div>
-            <div className="flex items-center gap-3 text-gray-300">
-              <Phone className="w-5 h-5 text-purple-400" />
-              +1 (555) 123-4567
-            </div>
-            <div className="flex items-center gap-3 text-gray-300">
-              <MapPin className="w-5 h-5 text-purple-400" />
-              123 Future St, Silicon Valley, CA
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-semibold">Follow Us</h2>
-            <div className="flex gap-4 text-gray-300">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
 }
